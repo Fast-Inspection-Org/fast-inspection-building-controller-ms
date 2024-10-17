@@ -11,6 +11,13 @@ export class Inspeccion {
     edificacionId: string // identificador de la edificación a la cual pertenece dicha inspección
     @Prop()
     configId: string // indentificador de la configuración con la cual fue realizada la inspección
+
+    constructor(fechaInicio: Date, sistemas: Array<Sistema>, edificacionId: string, configId: string) {
+        this.fechaInicio = fechaInicio
+        this.sistemas = sistemas
+        this.edificacionId = edificacionId
+        this.configId = configId
+    }
 }
 
 

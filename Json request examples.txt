@@ -1,0 +1,22 @@
+### Inspecciones
+### Inspección 1
+{
+  "configId": 144,
+  "edificacionId": 1,
+  "deterioros": [
+    {
+      "codigo": "fgf",
+      "sistemaId": 175,
+      "subsistemaId": 102,
+      "materialId": 111,
+      "tipoDeterioroId": 107,
+      "campos": [
+        {
+          "nombre": "descripción",
+          "tipo": "Numérico",
+          "valor": "Un deterioro polémico"
+        }
+      ]
+    }
+  ]
+}

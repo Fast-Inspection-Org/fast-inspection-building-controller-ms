@@ -1,24 +1,37 @@
 import { Module } from '@nestjs/common';
 import { InspeccionService } from './inspeccion.service';
 import { InspeccionController } from './inspeccion.controller';
-import { SistemaModule } from './sistema/sistema.module';
-import { SubsistemaModule } from './subsistema/subsistema.module';
-import { MaterialModule } from './material/material.module';
 import { DeterioroModule } from './deterioro/deterioro.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Inspeccion, InspeccionSchema } from './schemas/inspeccion.schema';
-import { TipoDeterioroModule } from './tipo-deterioro/tipo-deterioro.module';
-import { TipoDeterioroAnalisisCriticidadModule } from './tipo-deterioro-analisis-criticidad/tipo-deterioro-analisis-criticidad.module';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { envs } from 'src/utils/envs';
+import { NameConfigsService } from 'src/utils/globals';
+import { SistemaService } from './sistema/sistema.service';
+import { SubsistemaService } from './subsistema/subsistema.service';
+import { MaterialService } from './material/material.service';
+import { TipoDeterioroService } from './tipo-deterioro/tipo-deterioro.service';
+import { TipoDeterioroAnalisisCriticidadService } from './tipo-deterioro-analisis-criticidad/tipo-deterioro-analisis-criticidad.service';
 
 @Module({
   controllers: [InspeccionController],
-  providers: [InspeccionService],
-  imports: [SistemaModule, SubsistemaModule, MaterialModule, DeterioroModule, MongooseModule.forFeature([
+  providers: [InspeccionService, SistemaService, SubsistemaService, MaterialService, TipoDeterioroService, TipoDeterioroAnalisisCriticidadService],
+  imports: [DeterioroModule, MongooseModule.forFeature([
     {
       name: Inspeccion.name,
       schema: InspeccionSchema
     }
-  ]), TipoDeterioroModule, TipoDeterioroAnalisisCriticidadModule],
+  ]),
+    ClientsModule.register([
+      {
+        name: NameConfigsService,
+        transport: Transport.TCP,
+        options: {
+          host: envs.CONFIGS_SERVICE_HOST,
+          port: parseInt(envs.CONFIGS_SERVICE_PORT)
+        }
+      }
+    ])],
   exports: [InspeccionService]
 })
 export class InspeccionModule { }
