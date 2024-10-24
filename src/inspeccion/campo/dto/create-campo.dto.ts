@@ -1,7 +1,5 @@
-import { TiposCampo } from "../schema/campo.schema"
-
 export class CreateCampoDTO {
+    id: number
     nombre: string
-    tipo: TiposCampo
-    valor: string // representa el valor seleccionado para dicho campo
+    nivelImportancia: number
 }

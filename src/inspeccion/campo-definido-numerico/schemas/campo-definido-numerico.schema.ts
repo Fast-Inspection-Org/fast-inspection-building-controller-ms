@@ -1,6 +1,7 @@
-import { Campo, TiposCampo } from "src/inspeccion/campo/schema/campo.schema";
+import { CampoDefinido, TiposCampo } from "src/inspeccion/campo-definido/schema/campo-definido.schema"
 
-export class CampoNumerico extends Campo {
+
+export class CampoDefinidoNumerico extends CampoDefinido {
     unidadMedida: string
 
     constructor(

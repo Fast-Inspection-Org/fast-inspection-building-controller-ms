@@ -1,4 +1,5 @@
-import { CreateCampoDTO } from "src/inspeccion/campo/dto/create-campo.dto"
+import { CreateCampoDefinidoDTO } from "src/inspeccion/campo-definido/dto/create-definido-campo.dto"
+
 
 export class CreateDeterioroDTO {
   codigo: string
@@ -6,5 +7,5 @@ export class CreateDeterioroDTO {
   subsistemaId: string
   materialId: string
   tipoDeterioroId: string
-  campos: Array<CreateCampoDTO>
+  campos: Array<CreateCampoDefinidoDTO>
 }

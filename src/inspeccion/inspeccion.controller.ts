@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
 import { InspeccionService } from './inspeccion.service';
 import { CreateInspeccionDto } from './dto/create-inspeccion.dto';
 import { UpdateInspeccionDto } from './dto/update-inspeccion.dto';
@@ -6,7 +6,7 @@ import { UpdateInspeccionDto } from './dto/update-inspeccion.dto';
 @Controller('inspeccion')
 export class InspeccionController {
   constructor(private readonly inspeccionService: InspeccionService) { }
-
+  
   @Post()
   public async create(@Body() createInspeccionDto: CreateInspeccionDto) {
     return await this.inspeccionService.create(createInspeccionDto);

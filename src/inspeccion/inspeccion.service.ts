@@ -2,12 +2,12 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CreateInspeccionDto } from './dto/create-inspeccion.dto';
 import { UpdateInspeccionDto } from './dto/update-inspeccion.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Inspeccion } from './schemas/inspeccion.schema';
 import { Model } from 'mongoose';
 import { NameConfigsService } from 'src/utils/globals';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { SistemaService } from './sistema/sistema.service';
+import { Inspeccion } from './schemas/inspeccion.schema';
 
 @Injectable()
 export class InspeccionService {
@@ -16,14 +16,16 @@ export class InspeccionService {
     private sistemaService: SistemaService) { }
   public async create(createInspeccionDto: CreateInspeccionDto) {
     // se realiza una estructuración de la inspección
-
-    const inspeccion = new this.inspeccionModel(new Inspeccion(new Date(),
-      /* se obtienen los sistemas configurados para dicha inspección*/
-      await this.sistemaService.getSistemasConfigurados(createInspeccionDto.configId, createInspeccionDto.deterioros),
-      createInspeccionDto.edificacionId, createInspeccionDto.configId))
+    const inspeccion = new Inspeccion(new Date(),
+      createInspeccionDto.edificacionId, createInspeccionDto.configId)
+    //se obtienen los sistemas configurados para dicha inspección
+    inspeccion.sistemas = await this.sistemaService.getSistemasConfigurados(createInspeccionDto.configId, createInspeccionDto.deterioros, inspeccion)
+    // se realizan los cálculos
+    await inspeccion.realizarCalculos()
+    const inspeccionSchema = new this.inspeccionModel(inspeccion)
 
     // se inserta en la base de datos la insepección
-    return await inspeccion.save()
+    return await inspeccionSchema.save()
   }
 
   public async findAll() {

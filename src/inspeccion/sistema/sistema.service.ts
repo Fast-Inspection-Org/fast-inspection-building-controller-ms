@@ -7,6 +7,7 @@ import { CreateSistemaDTO } from './dto/create-sistema.dto';
 import { firstValueFrom } from 'rxjs';
 import { Herramienta } from '../herramienta/schemas/herramienta.schema';
 import { SubsistemaService } from '../subsistema/subsistema.service';
+import { Inspeccion } from '../schemas/inspeccion.schema';
 
 @Injectable()
 export class SistemaService {
@@ -15,7 +16,8 @@ export class SistemaService {
 
     // Método para obtener los sistemas configurados para una inspección
     public async getSistemasConfigurados(configId: string /* representa el identificador de la configuración seleccionada para la insepeccion */,
-        deteriorosInspeccion: Array<CreateDeterioroDTO> /* representa los deterioros indentificados en la inspección */
+        deteriorosInspeccion: Array<CreateDeterioroDTO> /* representa los deterioros indentificados en la inspección */,
+        inspeccion: Inspeccion // la inspección es para poder estructurar la relación birideccional
     ): Promise<Array<Sistema>> {
         const sistemas = new Array<Sistema>()
         // se obtienen los sitemas pertenecientes a la configuración específicada
@@ -28,9 +30,11 @@ export class SistemaService {
             const createSistemaDTO = createSistemasDTO[index];
             // se filtran los deterioros pertenecientes a dicho sistema
             const deteriorosSistemas = deteriorosInspeccion.filter(deterioro => deterioro.sistemaId === createSistemaDTO.id)
-            sistemas.push(new Sistema(createSistemaDTO.id, createSistemaDTO.nombre,
-                await this.subsistemaService.getSubsistemasConfigurados(createSistemaDTO.id, deteriorosSistemas),
-                new Herramienta(createSistemaDTO.herramienta.id, createSistemaDTO.herramienta.nombre, createSistemaDTO.herramienta.tipo)))
+
+            const sistema = new Sistema(createSistemaDTO.id, createSistemaDTO.nombre,
+                new Herramienta(createSistemaDTO.herramienta.id, createSistemaDTO.herramienta.nombre, createSistemaDTO.herramienta.tipo))
+            sistema.subsistemas = await this.subsistemaService.getSubsistemasConfigurados(createSistemaDTO.id, deteriorosSistemas, sistema, inspeccion) // se cargan los subsistemas de ese sistema
+            sistemas.push(sistema)
         }
         return sistemas
     }

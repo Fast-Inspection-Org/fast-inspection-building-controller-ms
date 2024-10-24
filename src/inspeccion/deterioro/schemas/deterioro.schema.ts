@@ -1,13 +1,18 @@
-import { Schema } from "@nestjs/mongoose";
-import { Campo } from "src/inspeccion/campo/schema/campo.schema";
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { CampoDefinido, CampoDefinidoSchema } from "src/inspeccion/campo-definido/schema/campo-definido.schema";
+
 
 @Schema()
 export class Deterioro {
+    @Prop()
     codigo: string
-    campos: Array<Campo>
+    @Prop({ type: [CampoDefinidoSchema] })
+    camposDefinidos: Array<CampoDefinido>
 
-    constructor(codigo: string, campos: Array<Campo>) {
+    constructor(codigo: string, camposDefinidos: Array<CampoDefinido>) {
         this.codigo = codigo
-        this.campos = campos
+        this.camposDefinidos = camposDefinidos
     }
 }
+
+export const DeterioroSchema = SchemaFactory.createForClass(Deterioro)
