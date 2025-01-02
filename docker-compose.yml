@@ -28,10 +28,10 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${DB_USERNAME:-adrian}
       MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD:-12345678}
     volumes:
-      - mongodb_data:/data/db
+      - fast_inspection_inspection_controller_db_server_data:/data/db
 
 volumes:
-  mongodb_data:
+  fast_inspection_inspection_controller_db_server_data:
 
 
 networks:
