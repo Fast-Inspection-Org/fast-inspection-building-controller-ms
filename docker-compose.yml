@@ -1,5 +1,5 @@
 services:
-  fast_inspection_inspection_controller:
+  fast_inspection_inspection_controller_ms:
     build:
       context: .
       dockerfile: Dockerfile
