@@ -1,13 +1,19 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { EdificacionModule } from './edificacion/edificacion.module';
 import { InspeccionModule } from './inspeccion/inspeccion.module';
-import { MongooseModule } from '@nestjs/mongoose';
-import { envs } from './utils/envs';
 
 @Module({
-  imports: [EdificacionModule, InspeccionModule, MongooseModule.forRoot(`mongodb://localhost/${envs.NAME_DB}`)],
+  imports: [
+    // Configura la conexión directamente usando process.env
+    MongooseModule.forRoot(
+      `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}?authSource=admin`,
+    ),
+    EdificacionModule,
+    InspeccionModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

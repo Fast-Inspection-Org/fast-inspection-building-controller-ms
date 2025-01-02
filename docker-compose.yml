@@ -1,0 +1,39 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: ${PORT:-3003}
+      NAME_DB: ${NAME_DB:-building_controller_db}
+      DB_HOST: ${DB_HOST:-mongo}
+      DB_PORT: ${DB_PORT:-27017}
+      DB_USERNAME: ${DB_USERNAME:-adrian}
+      DB_PASSWORD: ${DB_PASSWORD:-12345678}
+      CONFIGS_SERVICE_HOST: ${CONFIGS_SERVICE_HOST:-localhost}
+      CONFIGS_SERVICE_PORT: ${CONFIGS_SERVICE_PORT:-3003}
+    ports:
+      - "${PORT:-3003}:${PORT:-3003}"
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - ${DB_PORT:-27017}:${DB_PORT:-27017}
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USERNAME:-adrian}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD:-12345678}
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
+
+
+networks:
+  default:
+    name: fast_inspection_network
+
