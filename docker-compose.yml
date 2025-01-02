@@ -1,5 +1,5 @@
 services:
-  app:
+  fast_inspection_inspection_controller:
     build:
       context: .
       dockerfile: Dockerfile
@@ -8,7 +8,7 @@ services:
       PORT: ${PORT:-3003}
       HOST: ${HOST:-localhost}
       NAME_DB: ${NAME_DB:-building_controller_db}
-      DB_HOST: ${DB_HOST:-mongo}
+      DB_HOST: ${DB_HOST:-fast_inspection_inspection_controller_db_server}
       DB_PORT: ${DB_PORT:-27017}
       DB_USERNAME: ${DB_USERNAME:-adrian}
       DB_PASSWORD: ${DB_PASSWORD:-12345678}
@@ -17,11 +17,11 @@ services:
     ports:
       - "${PORT:-3003}:${PORT:-3003}"
     depends_on:
-      - mongo
+      - fast_inspection_inspection_controller_db_server
 
-  mongo:
+  fast_inspection_inspection_controller_db_server:
     image: mongo
-    container_name: mongo
+    container_name: fast_inspection_inspection_controller_db_server
     ports:
       - ${DB_PORT:-27017}:${DB_PORT:-27017}
     environment:
