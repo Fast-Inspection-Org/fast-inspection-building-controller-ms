@@ -6,7 +6,7 @@ services:
     environment:
       NODE_ENV: ${NODE_ENV:-development}
       PORT: ${PORT:-3003}
-      HOST: ${HOST:-localhost}
+      HOST: ${HOST:-fast_inspection_inspection_controller_ms}
       NAME_DB: ${NAME_DB:-building_controller_db}
       DB_HOST: ${DB_HOST:-fast_inspection_inspection_controller_db_server}
       DB_PORT: ${DB_PORT:-27017}
@@ -19,6 +19,9 @@ services:
     depends_on:
       - fast_inspection_inspection_controller_db_server
 
+    networks:
+      - fast_inspection_network
+
   fast_inspection_inspection_controller_db_server:
     image: mongo
     container_name: fast_inspection_inspection_controller_db_server
@@ -30,12 +33,14 @@ services:
     volumes:
       - fast_inspection_inspection_controller_db_server_data:/data/db
 
+    networks:
+      - fast_inspection_network
+
 volumes:
   fast_inspection_inspection_controller_db_server_data:
 
 
 networks:
-  default:
+  fast_inspection_network:
     name: fast_inspection_network
-    external: true
 
