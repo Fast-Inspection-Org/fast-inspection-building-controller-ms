@@ -7,7 +7,6 @@ import { InspeccionModule } from './inspeccion/inspeccion.module';
 
 @Module({
   imports: [
-    // Configura la conexión directamente usando process.env
     MongooseModule.forRoot(
       `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}?authSource=admin`,
     ),
