@@ -1,77 +1,69 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Query,
-} from '@nestjs/common';
+import { Controller, Body, Param, Query } from '@nestjs/common';
 import { InspeccionService } from './inspeccion.service';
 import { CreateInspeccionDto } from './dto/create-inspeccion.dto';
 import { UpdateInspeccionDto } from './dto/update-inspeccion.dto';
+import { MessagePattern } from '@nestjs/microservices';
 
 @Controller('inspeccion')
 export class InspeccionController {
   constructor(private readonly inspeccionService: InspeccionService) {}
 
-  @Post()
+  @MessagePattern('create-inspection')
   public async create(@Body() createInspeccionDto: CreateInspeccionDto) {
     return await this.inspeccionService.create(createInspeccionDto);
   }
 
-  @Get()
-  public async findAll(@Query('edificacionId') edificacionId?: string) {
+  @MessagePattern('find-inspections')
+  public async findAll(edificacionId?: string) {
     return await this.inspeccionService.findAll(
       edificacionId ? +edificacionId : undefined,
     );
   }
 
-  @Get('find-sistemas/:inspeccionId')
-  public async findSistemas(@Param('inspeccionId') inspeccionId: string) {
+  @MessagePattern('find-sistemas-inspection')
+  public async findSistemas(inspeccionId: string) {
     return await this.inspeccionService.findSistemas(inspeccionId);
   }
 
-  @Get('find-subsistemas/:inspeccionId/:sistemaId')
-  public async findSubsistemas(
-    @Param('inspeccionId') inspeccionId: string,
-    @Param('sistemaId') sistemaId: string,
-  ) {
+  @MessagePattern('find-subsistemas-inspection')
+  public async findSubsistemas(payload: {
+    inspeccionId: string;
+    sistemaId: string;
+  }) {
     return await this.inspeccionService.findSubsistemas(
-      inspeccionId,
-      sistemaId,
+      payload.inspeccionId,
+      payload.sistemaId,
     );
   }
 
-  @Get('find-materiales/:inspeccionId/:sistemaId/:subsistemaId')
-  public async findMateriales(
-    @Param('inspeccionId') inspeccionId: string,
-    @Param('sistemaId') sistemaId: string,
-    @Param('subsistemaId') subsistemaId: string,
-  ) {
+  @MessagePattern('find-materiales-inspection')
+  public async findMateriales(payload: {
+    inspeccionId: string;
+    sistemaId: string;
+    subsistemaId: string;
+  }) {
     return await this.inspeccionService.findMateriales(
-      inspeccionId,
-      sistemaId,
-      subsistemaId,
+      payload.inspeccionId,
+      payload.sistemaId,
+      payload.subsistemaId,
     );
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @MessagePattern('find-inspection')
+  findOne(id: string) {
     return this.inspeccionService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateInspeccionDto: UpdateInspeccionDto,
-  ) {
-    return this.inspeccionService.update(+id, updateInspeccionDto);
+  @MessagePattern('update-inspection')
+  update(payload: { id: string; updateInspeccionDto: UpdateInspeccionDto }) {
+    return this.inspeccionService.update(
+      +payload.id,
+      payload.updateInspeccionDto,
+    );
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @MessagePattern('delete-inspection')
+  remove(id: string) {
     return this.inspeccionService.remove(+id);
   }
 }
