@@ -1,8 +1,8 @@
-import { Controller, Body, Param, Query } from '@nestjs/common';
+import { Controller, Body } from '@nestjs/common';
 import { InspeccionService } from './inspeccion.service';
 import { CreateInspeccionDto } from './dto/create-inspeccion.dto';
 import { UpdateInspeccionDto } from './dto/update-inspeccion.dto';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, RpcException } from '@nestjs/microservices';
 
 @Controller('inspeccion')
 export class InspeccionController {
@@ -10,19 +10,41 @@ export class InspeccionController {
 
   @MessagePattern('create-inspection')
   public async create(@Body() createInspeccionDto: CreateInspeccionDto) {
-    return await this.inspeccionService.create(createInspeccionDto);
+    try {
+      await this.inspeccionService.create(createInspeccionDto);
+      return { success: true };
+    } catch (error) {
+      throw new RpcException({
+        message: error.message,
+        status: error.status,
+      });
+    }
   }
 
   @MessagePattern('find-inspections')
   public async findAll(edificacionId?: string) {
-    return await this.inspeccionService.findAll(
-      edificacionId ? +edificacionId : undefined,
-    );
+    try {
+      return await this.inspeccionService.findAll(
+        edificacionId ? +edificacionId : undefined,
+      );
+    } catch (error) {
+      throw new RpcException({
+        message: error.message,
+        status: error.status,
+      });
+    }
   }
 
   @MessagePattern('find-sistemas-inspection')
   public async findSistemas(inspeccionId: string) {
-    return await this.inspeccionService.findSistemas(inspeccionId);
+    try {
+      return await this.inspeccionService.findSistemas(inspeccionId);
+    } catch (error) {
+      throw new RpcException({
+        message: error.message,
+        status: error.status,
+      });
+    }
   }
 
   @MessagePattern('find-subsistemas-inspection')
@@ -30,10 +52,17 @@ export class InspeccionController {
     inspeccionId: string;
     sistemaId: string;
   }) {
-    return await this.inspeccionService.findSubsistemas(
-      payload.inspeccionId,
-      payload.sistemaId,
-    );
+    try {
+      return await this.inspeccionService.findSubsistemas(
+        payload.inspeccionId,
+        payload.sistemaId,
+      );
+    } catch (error) {
+      throw new RpcException({
+        message: error.message,
+        status: error.status,
+      });
+    }
   }
 
   @MessagePattern('find-materiales-inspection')
@@ -42,28 +71,55 @@ export class InspeccionController {
     sistemaId: string;
     subsistemaId: string;
   }) {
-    return await this.inspeccionService.findMateriales(
-      payload.inspeccionId,
-      payload.sistemaId,
-      payload.subsistemaId,
-    );
+    try {
+      return await this.inspeccionService.findMateriales(
+        payload.inspeccionId,
+        payload.sistemaId,
+        payload.subsistemaId,
+      );
+    } catch (error) {
+      throw new RpcException({
+        message: error.message,
+        status: error.status,
+      });
+    }
   }
 
   @MessagePattern('find-inspection')
   findOne(id: string) {
-    return this.inspeccionService.findOne(+id);
+    try {
+      return this.inspeccionService.findOne(+id);
+    } catch (error) {
+      throw new RpcException({
+        message: error.message,
+        status: error.status,
+      });
+    }
   }
 
   @MessagePattern('update-inspection')
   update(payload: { id: string; updateInspeccionDto: UpdateInspeccionDto }) {
-    return this.inspeccionService.update(
-      +payload.id,
-      payload.updateInspeccionDto,
-    );
+    try {
+      this.inspeccionService.update(+payload.id, payload.updateInspeccionDto);
+      return { success: true };
+    } catch (error) {
+      throw new RpcException({
+        message: error.message,
+        status: error.status,
+      });
+    }
   }
 
   @MessagePattern('delete-inspection')
   remove(id: string) {
-    return this.inspeccionService.remove(+id);
+    try {
+      this.inspeccionService.remove(+id);
+      return { success: true };
+    } catch (error) {
+      throw new RpcException({
+        message: error.message,
+        status: error.status,
+      });
+    }
   }
 }
