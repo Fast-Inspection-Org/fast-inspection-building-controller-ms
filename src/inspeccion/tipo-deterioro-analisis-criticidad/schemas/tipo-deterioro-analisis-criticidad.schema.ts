@@ -3,7 +3,6 @@ import { Deterioro } from "src/inspeccion/deterioro/schemas/deterioro.schema";
 import { Sistema } from "src/inspeccion/sistema/schemas/sistema.schema";
 import { TipoDeterioro } from "src/inspeccion/tipo-deterioro/schemas/tipo-deterioro.schema";
 import { TipoDeterioroAnalisisCriticidadService } from "../tipo-deterioro-analisis-criticidad.service";
-import { InspeccionService } from "src/inspeccion/inspeccion.service";
 import { Inspeccion } from "src/inspeccion/schemas/inspeccion.schema";
 import { Calculos } from "src/utils/interfaces";
 import { Campo, CampoSchema } from "src/inspeccion/campo/schemas/campo.schema";
@@ -20,11 +19,11 @@ export class TipoDeterioroAnalisisCriticidad extends TipoDeterioro {
     inspeccion: Inspeccion // virtual property
     tipoDeterioroAnalisisCriticidadService: TipoDeterioroAnalisisCriticidadService // virtual property
 
-    constructor(id: string, nombre: string, deterioros: Array<Deterioro>, sistema: Sistema, inspeccion: Inspeccion,
+    constructor(id: string, nombre: string, deterioros: Array<Deterioro>, sistema: Sistema,
         tipoDeterioroAnalisisCriticidadService: TipoDeterioroAnalisisCriticidadService, detectabilidad: number, camposAfectados: Array<Campo>) {
         super(id, nombre, deterioros)
         this.sistema = sistema
-        this.inspeccion = inspeccion
+
         this.tipoDeterioroAnalisisCriticidadService = tipoDeterioroAnalisisCriticidadService
         this.detectabilidad = detectabilidad
         this.camposAfectados = camposAfectados
