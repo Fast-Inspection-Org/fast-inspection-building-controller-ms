@@ -11,6 +11,7 @@ import { Inspeccion } from './schemas/inspeccion.schema';
 import { InspeccionSerializable } from './serializable/inspeccion.serializable';
 import { FiltersInspeccion } from './dto/filters-inspeccion';
 import { SistemaSerializable } from './sistema/serializable/sistema.serializable';
+import { ApiPaginatedResponse } from 'src/utils/api-response';
 
 @Injectable()
 export class InspeccionService {
@@ -44,7 +45,7 @@ export class InspeccionService {
     edificacionId?: number,
     indiceCriticidad?: number,
     cantDeterioros?: number,
-  ): Promise<Array<InspeccionSerializable>> {
+  ): Promise<ApiPaginatedResponse<InspeccionSerializable[]>> {
     const inspeccionesSerializables: Array<InspeccionSerializable> =
       new Array<InspeccionSerializable>();
     // Construir el objeto de filtro dinámicamente y eliminar propiedades undefined
@@ -71,7 +72,7 @@ export class InspeccionService {
         ),
       );
     });
-    return inspeccionesSerializables;
+    return { data: inspeccionesSerializables };
   }
 
   // Método para obtener todos los sistemas de una inspección
@@ -131,12 +132,12 @@ export class InspeccionService {
       );
   }
 
-   // Método para obtener todos los tipos de deterioro de un material específicado
-   public async findTiposDeterioros(
+  // Método para obtener todos los tipos de deterioro de un material específicado
+  public async findTiposDeterioros(
     inspeccionId: string,
     sistemaId: string,
     subsistemaId: string,
-    materialId: string
+    materialId: string,
   ) {
     // find the inspeccion
     const inspeccion = await this.inspeccionModel.findById(inspeccionId).exec();
