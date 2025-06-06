@@ -1,0 +1,42 @@
+name: Deploy to VPS
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Add SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.VPS_SSH_KEY }}
+          known_hosts: "just-easy-guess"
+
+      - name: Execute Deploy Script
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }} "
+            cd /home/deployer && 
+            git clone git@github.com:Fast-Inspection-Org/fast-inspection-building-controller-ms.git || true && 
+            cd fast-inspection-building-controller-ms &&
+            rm -f .env &&
+            echo 'HOST=${{ secrets.HOST }}' > .env &&
+            echo 'PORT=${{ secrets.PORT }}' >> .env &&
+            echo 'DB_NAME=${{ secrets.DB_NAME }}' >> .env &&
+            echo 'DB_HOST=${{ secrets.DB_HOST }}' >> .env &&
+            echo 'DB_PORT=${{ secrets.DB_PORT }}' >> .env &&
+            echo 'DB_USERNAME=${{ secrets.DB_USERNAME }}' >> .env &&
+            echo 'DB_PASSWORD=${{ secrets.DB_PASSWORD }}' >> .env &&
+            echo 'CONFIGS_SERVICE_HOST=${{ secrets.CONFIGS_SERVICE_HOST }}' >> .env &&
+            echo 'CONFIGS_SERVICE_PORT=${{ secrets.CONFIGS_SERVICE_PORT }}' >> .env &&
+            git pull origin main && 
+            docker-compose down &&
+            docker-compose pull && 
+            docker-compose up -d --build
+          "
