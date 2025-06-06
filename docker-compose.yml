@@ -8,38 +8,18 @@ services:
       PORT: ${PORT:-3003}
       HOST: ${HOST:-fast_inspection_inspection_controller_ms}
       DB_NAME: ${DB_NAME:-building_controller_db}
-      DB_HOST: ${DB_HOST:-fast_inspection_inspection_controller_db_server}
-      DB_PORT: ${DB_PORT:-27017}
+      DB_HOST: ${DB_HOST:-fast_inspection_mongo_db_server}
+      DB_PORT: ${DB_PORT:-27018}
       DB_USERNAME: ${DB_USERNAME:-adrian}
       DB_PASSWORD: ${DB_PASSWORD:-12345678}
       CONFIGS_SERVICE_HOST: ${CONFIGS_SERVICE_HOST:-fast_inspection_config_ms}
-      CONFIGS_SERVICE_PORT: ${CONFIGS_SERVICE_PORT:-3001}
+      CONFIGS_SERVICE_PORT: ${CONFIGS_SERVICE_PORT:-3002}
     ports:
       - "${PORT:-3003}:${PORT:-3003}"
-    depends_on:
-      - fast_inspection_inspection_controller_db_server
-
     networks:
       - fast_inspection_network
 
-  fast_inspection_inspection_controller_db_server:
-    image: mongo
-    container_name: fast_inspection_inspection_controller_db_server
-    ports:
-      - ${DB_PORT:-27017}:${DB_PORT:-27017}
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${DB_USERNAME:-adrian}
-      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD:-12345678}
-    volumes:
-      - fast_inspection_inspection_controller_db_server_data:/data/db
-
-    networks:
-      - fast_inspection_network
-
-volumes:
-  fast_inspection_inspection_controller_db_server_data:
-
-
+  
 networks:
   fast_inspection_network:
     name: fast_inspection_network
