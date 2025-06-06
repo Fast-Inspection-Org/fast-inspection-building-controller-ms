@@ -13,7 +13,7 @@ services:
       DB_USERNAME: ${DB_USERNAME:-adrian}
       DB_PASSWORD: ${DB_PASSWORD:-12345678}
       CONFIGS_SERVICE_HOST: ${CONFIGS_SERVICE_HOST:-fast_inspection_config_ms}
-      CONFIGS_SERVICE_PORT: ${CONFIGS_SERVICE_PORT:-3002}
+      CONFIGS_SERVICE_PORT: ${CONFIGS_SERVICE_PORT:-3001}
     ports:
       - "${PORT:-3003}:${PORT:-3003}"
     networks:
