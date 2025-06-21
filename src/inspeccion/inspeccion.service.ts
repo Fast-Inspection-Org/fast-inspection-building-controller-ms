@@ -45,7 +45,7 @@ export class InspeccionService {
     edificacionId?: number,
     indiceCriticidad?: number,
     cantDeterioros?: number,
-    configId?: string
+    configId?: string,
   ): Promise<ApiPaginatedResponse<InspeccionSerializable[]>> {
     const inspeccionesSerializables: Array<InspeccionSerializable> =
       new Array<InspeccionSerializable>();
@@ -55,7 +55,7 @@ export class InspeccionService {
       edificacionId,
       indiceCriticidad,
       cantDeterioros,
-      configId
+      configId,
     );
     Object.keys(filters).forEach(
       (key) => filters[key] === undefined && delete filters[key],
@@ -156,8 +156,8 @@ export class InspeccionService {
       );
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} inspeccion`;
+  async findOne(id: string) {
+    return await this.inspeccionModel.findById(id);
   }
 
   update(id: number, updateInspeccionDto: UpdateInspeccionDto) {

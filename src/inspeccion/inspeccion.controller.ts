@@ -91,7 +91,7 @@ export class InspeccionController {
   @MessagePattern('find-inspection')
   findOne(id: string) {
     try {
-      return this.inspeccionService.findOne(+id);
+      return this.inspeccionService.findOne(id);
     } catch (error) {
       throw new RpcException({
         message: error.message,
