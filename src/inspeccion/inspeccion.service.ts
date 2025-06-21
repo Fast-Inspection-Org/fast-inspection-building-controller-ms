@@ -65,6 +65,7 @@ export class InspeccionService {
     inspecciones.forEach((inspeccion) => {
       inspeccionesSerializables.push(
         new InspeccionSerializable(
+          inspeccion.id,
           inspeccion.fechaInicio,
           inspeccion.configVersion,
           inspeccion.indiceCriticidad,
