@@ -45,6 +45,7 @@ export class InspeccionService {
     edificacionId?: number,
     indiceCriticidad?: number,
     cantDeterioros?: number,
+    configId?: string
   ): Promise<ApiPaginatedResponse<InspeccionSerializable[]>> {
     const inspeccionesSerializables: Array<InspeccionSerializable> =
       new Array<InspeccionSerializable>();
@@ -54,6 +55,7 @@ export class InspeccionService {
       edificacionId,
       indiceCriticidad,
       cantDeterioros,
+      configId
     );
     Object.keys(filters).forEach(
       (key) => filters[key] === undefined && delete filters[key],

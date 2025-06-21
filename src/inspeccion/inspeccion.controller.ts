@@ -22,12 +22,13 @@ export class InspeccionController {
   }
 
   @MessagePattern('find-inspections')
-  public async findAll(filters: {
-    edificacionId?: string
-  }) {
+  public async findAll(filters: { edificacionId?: string; configId?: string }) {
     try {
       return await this.inspeccionService.findAll(
         filters.edificacionId ? +filters.edificacionId : undefined,
+        undefined,
+        undefined,
+        filters.configId,
       );
     } catch (error) {
       throw new RpcException({
