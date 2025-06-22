@@ -33,6 +33,7 @@ export class InspeccionService {
       createInspeccionDto.deterioros,
       inspeccion,
     );
+    console.log(inspeccion)
     // se realizan los cálculos
     await inspeccion.realizarCalculos();
     const inspeccionSchema = new this.inspeccionModel(inspeccion);
