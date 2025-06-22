@@ -48,6 +48,7 @@ export class SistemaService {
           createSistemaDTO.herramienta.tipo,
         ),
       );
+      console.log("Prueba 1")
       sistema.subsistemas =
         await this.subsistemaService.getSubsistemasConfigurados(
           createSistemaDTO.id,
@@ -55,8 +56,12 @@ export class SistemaService {
           sistema,
           inspeccion,
         ); // se cargan los subsistemas de ese sistema
+        console.log("Prueba 2")
+        console.log(sistema)
       sistemas.push(sistema);
+      
     }
+    console.log(sistemas)
     return sistemas;
   }
 
