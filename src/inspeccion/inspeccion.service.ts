@@ -21,6 +21,7 @@ export class InspeccionService {
     private sistemaService: SistemaService,
   ) {}
   public async create(createInspeccionDto: CreateInspeccionDto) {
+    console.log(createInspeccionDto)
     // se realiza una estructuración de la inspección
     const inspeccion = new Inspeccion(
       new Date(),
