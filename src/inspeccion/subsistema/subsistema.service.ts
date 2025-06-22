@@ -27,11 +27,11 @@ export class SubsistemaService {
     const subsistemas = new Array<Subsistema>();
     // se obtienen los subsistemas pertenecientes al sistema específicado
     const createSubsistemasDTO: Array<CreateSubsistemaDTO> =
-      await firstValueFrom(
+      (await firstValueFrom(
         this.configsClient.send('getAllSubsistemasConfig', {
           idSistemaConfig: sistemaId,
         }),
-      );
+      )).data
     // se estructuran esos subsistemas
     for (let index = 0; index < createSubsistemasDTO.length; index++) {
       const createSubsistemaDTO = createSubsistemasDTO[index];

@@ -28,7 +28,7 @@ export class TipoDeterioroAnalisisCriticidadService {
       new Array<TipoDeterioroAnalisisCriticidad>();
     // se obtienen los tipos de deterioro pertenecientes al material específicado
     const createTiposDeteriorosAnalisisCriticidadDTO: Array<CreateTipoDeterioroAnalisisCriticidadDTO> =
-      await firstValueFrom(
+      (await firstValueFrom(
         this.configsClient.send(
           'getAllTiposDeteriorosAnalisisCriticidadConfig',
           {
@@ -36,7 +36,7 @@ export class TipoDeterioroAnalisisCriticidadService {
             withCamposAfectados: true, // se indica que se desean obtener los tipos de deterioros con los campos
           },
         ),
-      );
+      )).data
 
     // se estructuran esos subsistemas
     for (

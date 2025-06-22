@@ -21,9 +21,9 @@ export class MaterialService {
     ): Promise<Array<Material>> {
         const materiales = new Array<Material>()
         // se obtienen los materiales pertenecientes al subsistema específicado
-        const createMaterialesDTO: Array<CreateMaterialDTO> = await firstValueFrom(this.configsClient.send('getAllMaterialesConfig', {
+        const createMaterialesDTO: Array<CreateMaterialDTO> = (await firstValueFrom(this.configsClient.send('getAllMaterialesConfig', {
             idSubsistemaConfig: subsistemaId
-        }))
+        }))).data
         // se estructuran esos subsistemas
         for (let index = 0; index < createMaterialesDTO.length; index++) {
             const createMaterialDTO = createMaterialesDTO[index];

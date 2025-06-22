@@ -25,11 +25,11 @@ export class SistemaService {
   ): Promise<Array<Sistema>> {
     const sistemas = new Array<Sistema>();
     // se obtienen los sitemas pertenecientes a la configuración específicada
-    const createSistemasDTO: Array<CreateSistemaDTO> = await firstValueFrom(
+    const createSistemasDTO: Array<CreateSistemaDTO> = (await firstValueFrom(
       this.configsClient.send('getAllBelongConfig', {
         versionConfig: configId,
       }),
-    );
+    )).data
     // se estructuran esos sistemas
     console.log(createSistemasDTO)
     for (let index = 0; index < createSistemasDTO.length; index++) {
