@@ -36,7 +36,8 @@ export class InspeccionService {
     // se realizan los cálculos
     await inspeccion.realizarCalculos();
     const inspeccionSchema = new this.inspeccionModel(inspeccion);
-
+    console.log(inspeccion)
+    console.log(inspeccionSchema)
     // se inserta en la base de datos la insepección
     return await inspeccionSchema.save();
   }
