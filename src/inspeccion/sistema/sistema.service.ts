@@ -31,7 +31,7 @@ export class SistemaService {
       }),
     );
     // se estructuran esos sistemas
-
+    console.log(createSistemasDTO)
     for (let index = 0; index < createSistemasDTO.length; index++) {
       const createSistemaDTO = createSistemasDTO[index];
       // se filtran los deterioros pertenecientes a dicho sistema
