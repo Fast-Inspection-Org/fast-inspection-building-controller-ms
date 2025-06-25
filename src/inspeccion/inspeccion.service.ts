@@ -25,7 +25,8 @@ export class InspeccionService {
       ? await this.inspeccionModel.findById(createInspeccionDto.id)
       : null;
     console.log(createInspeccionDto);
-
+    console.log("Inspecciones a find")
+    console.log(inspectionFind)
     // si existe una inspección con ese identificador, se borra de la base de datos para ser actualizada
     if (inspectionFind) await this.remove(inspectionFind._id.toString());
 
