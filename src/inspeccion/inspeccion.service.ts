@@ -21,7 +21,14 @@ export class InspeccionService {
     private sistemaService: SistemaService,
   ) {}
   public async create(createInspeccionDto: CreateInspeccionDto) {
+    const inspectionFind = createInspeccionDto.id
+      ? await this.inspeccionModel.findById(createInspeccionDto.id)
+      : null;
     console.log(createInspeccionDto);
+
+    // si existe una inspección con ese identificador, se borra de la base de datos para ser actualizada
+    if (inspectionFind) await this.remove(inspectionFind._id.toString());
+
     // se realiza una estructuración de la inspección
     const inspeccion = new Inspeccion(
       new Date(),
@@ -170,7 +177,7 @@ export class InspeccionService {
     return `This action updates a #${id} inspeccion`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} inspeccion`;
+  async remove(id: string) {
+    return await this.inspeccionModel.deleteOne({ _id: id });
   }
 }

@@ -115,7 +115,7 @@ export class InspeccionController {
   @MessagePattern('delete-inspection')
   remove(id: string) {
     try {
-      this.inspeccionService.remove(+id);
+      this.inspeccionService.remove(id);
       return { success: true };
     } catch (error) {
       throw new RpcException({
