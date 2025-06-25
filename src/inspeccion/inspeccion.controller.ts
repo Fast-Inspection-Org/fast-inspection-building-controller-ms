@@ -12,7 +12,6 @@ export class InspeccionController {
   public async create(@Body() createInspeccionDto: CreateInspeccionDto) {
     try {
       await this.inspeccionService.create(createInspeccionDto);
-      return { success: true };
     } catch (error) {
       throw new RpcException({
         message: error.message,

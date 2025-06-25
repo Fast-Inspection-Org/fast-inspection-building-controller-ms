@@ -21,7 +21,7 @@ export class InspeccionService {
     private sistemaService: SistemaService,
   ) {}
   public async create(createInspeccionDto: CreateInspeccionDto) {
-    console.log(createInspeccionDto)
+    console.log(createInspeccionDto);
     // se realiza una estructuración de la inspección
     const inspeccion = new Inspeccion(
       new Date(),
@@ -34,14 +34,17 @@ export class InspeccionService {
       createInspeccionDto.deterioros,
       inspeccion,
     );
-    console.log(inspeccion)
+    console.log(inspeccion);
     // se realizan los cálculos
     await inspeccion.realizarCalculos();
     const inspeccionSchema = new this.inspeccionModel(inspeccion);
-    console.log(inspeccion)
-    console.log(inspeccionSchema)
+    console.log(inspeccion);
+    console.log(inspeccionSchema);
     // se inserta en la base de datos la insepección
-    return await inspeccionSchema.save();
+    const inspeccionBd = await inspeccionSchema.save();
+    return {
+      inspectionId: inspeccionBd._id,
+    };
   }
 
   public async findAll(
