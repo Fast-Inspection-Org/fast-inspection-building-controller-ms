@@ -180,13 +180,15 @@ export class InspeccionService {
       .sort({ fechaInicio: -1 }) // Orden descendente por fecha
       .exec();
 
-    return new InspeccionSerializable(
-      inspection._id.toString(),
-      inspection.fechaInicio,
-      inspection.configVersion,
-      inspection.indiceCriticidad,
-      inspection.cantDeterioros,
-    );
+    if (inspection)
+      return new InspeccionSerializable(
+        inspection._id.toString(),
+        inspection.fechaInicio,
+        inspection.configVersion,
+        inspection.indiceCriticidad,
+        inspection.cantDeterioros,
+      );
+    else throw new Error('No existen inspecciones asociadas a la edificación');
   }
 
   update(id: number, updateInspeccionDto: UpdateInspeccionDto) {
