@@ -25,8 +25,8 @@ export class InspeccionService {
       ? await this.inspeccionModel.findById(createInspeccionDto.id)
       : null;
     console.log(createInspeccionDto);
-    console.log("Inspecciones a find")
-    console.log(inspectionFind)
+    console.log('Inspecciones a find');
+    console.log(inspectionFind);
     // si existe una inspección con ese identificador, se borra de la base de datos para ser actualizada
     if (inspectionFind) await this.remove(inspectionFind._id.toString());
 
@@ -172,6 +172,21 @@ export class InspeccionService {
 
   async findOne(id: string) {
     return await this.inspeccionModel.findById(id);
+  }
+
+  async findEdificationLastInspection(edificationId: string) {
+    const inspection = await this.inspeccionModel
+      .findOne({ edificacionId: edificationId })
+      .sort({ fechaInicio: -1 }) // Orden descendente por fecha
+      .exec();
+
+    return new InspeccionSerializable(
+      inspection._id.toString(),
+      inspection.fechaInicio,
+      inspection.configVersion,
+      inspection.indiceCriticidad,
+      inspection.cantDeterioros,
+    );
   }
 
   update(id: number, updateInspeccionDto: UpdateInspeccionDto) {

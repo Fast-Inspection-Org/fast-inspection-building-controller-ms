@@ -99,6 +99,18 @@ export class InspeccionController {
     }
   }
 
+   @MessagePattern('find-edification-last-inspection')
+  findEdificationLastInspection(edificationId: string) {
+    try {
+      return this.inspeccionService.findEdificationLastInspection(edificationId);
+    } catch (error) {
+      throw new RpcException({
+        message: error.message,
+        status: error.status,
+      });
+    }
+  }
+
   @MessagePattern('update-inspection')
   update(payload: { id: string; updateInspeccionDto: UpdateInspeccionDto }) {
     try {
